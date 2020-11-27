@@ -24,7 +24,7 @@ library(plyr)
 library(lattice) 
 ```
 
-**Process/transform the data (if necessary) into a format suitable for your analysis**
+Process/transform the data (if necessary) into a format suitable for your analysis
 
 ```{process the data}
 activity$day <- weekdays(as.Date(activity$date))
@@ -36,20 +36,20 @@ activity$DateTime<- as.POSIXct(activity$date, format="%Y-%m-%d")
 clean <- activity[!is.na(activity$steps),]
 ```
 
-**What is mean total number of steps taken per day?**
+What is mean total number of steps taken per day?
 
 ```{summarizing total steps per date}
 sumTable <- aggregate(activity$steps ~ activity$date, FUN=sum, )
 colnames(sumTable)<- c("Date", "Steps")
 ```
 
-**2. Histogram of the total number of steps taken each day**
+2. Histogram of the total number of steps taken each day
 
 ```{Creating the historgram of total steps per day}
 hist(sumTable$Steps, breaks=5, xlab="Steps", main = "Total Steps per Day")
 ```
 
-**3. Mean and median number of steps taken each day**
+3. Mean and median number of steps taken each day
 
 ```{Calculate the mean and median of Steps}
 as.integer(mean(sumTable$Steps))
@@ -59,7 +59,7 @@ as.integer(median(sumTable$Steps))
 The mean is 10766
 The median is 10765
 
-**What is the average daily activity pattern?**
+What is the average daily activity pattern?
 
 ```{pulling data without nas}
 clean <- activity[!is.na(activity$steps),]
@@ -69,28 +69,28 @@ clean <- activity[!is.na(activity$steps),]
 intervalTable <- ddply(clean, .(interval), summarize, Avg = mean(steps))
 ```
 
-**4. Time series plot of the average number of steps taken**
+4. Time series plot of the average number of steps taken
 
 ```{Create line plot of average number of steps per interval}
 p <- ggplot(intervalTable, aes(x=interval, y=Avg), xlab = "Interval", ylab="Average Number of Steps")
 p + geom_line()+xlab("Interval")+ylab("Average Number of Steps")+ggtitle("Average Number of Steps per Interval")
 ```
 
-**5. The 5-minute interval that, on average, contains the maximum number of steps**
+5. The 5-minute interval that, on average, contains the maximum number of steps
 ```{Maximum steps by interval}
 maxSteps <- max(intervalTable$Avg)
 ```
 
-**Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?**
+Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 ```{Which interval contains the maximum average number of steps}
 intervalTable[intervalTable$Avg==maxSteps,1]
 ```
 The 5-minute interval which had the maximum number of steps was the 835 interval.
 
-**6. Code to describe and show a strategy for imputing missing data**
+6. Code to describe and show a strategy for imputing missing data
 
-**Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)**
+Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
 ```{Imputing missing values}
 nrow(activity[is.na(activity$steps),])
@@ -123,7 +123,7 @@ sumTable2 <- aggregate(mergeData$steps ~ mergeData$date, FUN=sum, )
 colnames(sumTable2)<- c("Date", "Steps")
 ```
 
-**Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?**
+Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 ```{Mean and Median with NA data taken care of}
 as.integer(mean(sumTable2$Steps))
@@ -133,7 +133,7 @@ as.integer(median(sumTable2$Steps))
 The mean is 10821
 The median is 11015
 
-**7. Histogram of the total number of steps taken each day after missing values are imputed**
+7. Histogram of the total number of steps taken each day after missing values are imputed
 
 ```{Creating the histogram of total steps per day, categorized by data set to show impact}
 hist(sumTable2$Steps, breaks=5, xlab="Steps", main = "Total Steps per Day with NAs Fixed", col="Black")
@@ -141,9 +141,9 @@ hist(sumTable$Steps, breaks=5, xlab="Steps", main = "Total Steps per Day with NA
 legend("topright", c("Imputed Data", "Non-NA Data"), fill=c("black", "grey") )
 ```
 
-**8. Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends**
+8. Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
 
-**Are there differences in activity patterns between weekdays and weekends?**
+Are there differences in activity patterns between weekdays and weekends?
 
 ```{Create new category based on the days of the week}
 mergeData$DayCategory <- ifelse(mergeData$day %in% c("Saturday", "Sunday"), "Weekend", "Weekday")
